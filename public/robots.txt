@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://color-palette-generator-2bw.pages.dev/sitemap.xml

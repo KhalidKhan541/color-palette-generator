@@ -1,0 +1,12 @@
+{
+  "name": "color-palette-generator",
+  "version": "1.0.0",
+  "description": "Generate beautiful color palettes with multiple harmony types",
+  "scripts": {
+    "dev": "npx wrangler pages dev public",
+    "deploy": "npx wrangler pages deploy public --project-name color-palette-generator"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Generator — Create Beautiful Palettes</title>
+  <meta name="description" content="Generate beautiful color palettes with Color Palette Generator. Free online tool for designers. Create monochromatic, analogous, complementary color schemes. Export to CSS/SCSS/Tailwind.">
+  <meta name="keywords" content="color palette generator, color scheme, color combinations, color picker, design colors, CSS colors, Tailwind colors">
+  <meta name="author" content="Color Palette Generator">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Color Palette Generator - Free Color Scheme Tool">
+  <meta property="og:description" content="Generate beautiful color palettes. Free online tool for designers. Create monochromatic, analogous, complementary color schemes.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://color-palette-generator-2bw.pages.dev">
+  <meta property="og:image" content="https://color-palette-generator-2bw.pages.dev/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Color Palette Generator - Free Color Scheme Tool">
+  <meta name="twitter:description" content="Generate beautiful color palettes. Free online tool for designers.">
+  <link rel="canonical" href="https://color-palette-generator-2bw.pages.dev">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8007430228126096" crossorigin="anonymous"></script>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon">&#9670;</span>
+        PaletteCraft
+      </a>
+      <nav class="header-nav">
+        <button class="btn btn-sm" id="btn-favorites" onclick="showFavorites()">Favorites</button>
+        <button class="btn btn-sm" id="btn-trending" onclick="showTrending()">Trending</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero / Palette Display -->
+  <section class="hero" id="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">Create Stunning<br/>Color Palettes</h1>
+      <p class="hero-subtitle">Press <kbd>Space</kbd> to generate · Click to copy · Lock colors you love</p>
+    </div>
+    <div class="palette-display" id="palette-display"></div>
+    <div class="hero-hint">
+      <span class="hint-key">&#9251; Space</span> Generate new palette
+    </div>
+  </section>
+
+  <!-- Controls Bar -->
+  <section class="controls-bar">
+    <div class="container controls-inner">
+      <div class="control-group">
+        <label class="control-label">Harmony</label>
+        <select id="harmony-select" class="select-control" onchange="generatePalette()">
+          <option value="random">Random</option>
+          <option value="monochromatic">Monochromatic</option>
+          <option value="analogous">Analogous</option>
+          <option value="complementary">Complementary</option>
+          <option value="triadic">Triadic</option>
+          <option value="split-complementary">Split-Complementary</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="control-label">Format</label>
+        <select id="format-select" class="select-control" onchange="updateDisplayFormats()">
+          <option value="hex">HEX</option>
+          <option value="rgb">RGB</option>
+          <option value="hsl">HSL</option>
+          <option value="cmyk">CMYK</option>
+        </select>
+      </div>
+      <div class="control-group control-actions">
+        <button class="btn btn-primary" onclick="generatePalette()">Generate</button>
+        <button class="btn btn-outline" onclick="saveFavorite()">Save</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Detail / Picker -->
+  <section class="detail-panel" id="detail-panel" style="display:none;">
+    <div class="container detail-inner">
+      <button class="detail-close" onclick="closeDetail()">&times;</button>
+      <div class="detail-preview" id="detail-preview"></div>
+      <div class="detail-info">
+        <h3 class="detail-title" id="detail-title">Color Details</h3>
+        <div class="detail-formats" id="detail-formats"></div>
+        <div class="detail-picker">
+          <label class="control-label">Pick a color</label>
+          <input type="color" id="color-picker" class="color-picker" onchange="pickerChanged(event)" />
+        </div>
+        <div class="detail-contrast" id="detail-contrast"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Export Panel -->
+  <section class="export-section" id="export-section">
+    <div class="container">
+      <h2 class="section-title">Export Your Palette</h2>
+      <div class="export-tabs">
+        <button class="export-tab active" onclick="switchExport('css')">CSS Variables</button>
+        <button class="export-tab" onclick="switchExport('scss')">SCSS</button>
+        <button class="export-tab" onclick="switchExport('tailwind')">Tailwind</button>
+        <button class="export-tab" onclick="switchExport('json')">JSON</button>
+      </div>
+      <div class="export-code-wrapper">
+        <pre class="export-code" id="export-code"></pre>
+        <button class="btn btn-sm btn-copy" onclick="copyExport()">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Palettes -->
+  <section class="trending-section" id="trending-section" style="display:none;">
+    <div class="container">
+      <h2 class="section-title">Trending Palettes</h2>
+      <div class="palette-grid" id="trending-grid"></div>
+    </div>
+  </section>
+
+  <!-- Favorites Panel -->
+  <section class="favorites-section" id="favorites-section" style="display:none;">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Your Favorites</h2>
+        <button class="btn btn-sm btn-outline" onclick="hideFavorites()">Close</button>
+      </div>
+      <div class="palette-grid" id="favorites-grid"></div>
+      <p class="empty-state" id="empty-favorites" style="display:none;">No favorites yet. Generate a palette and click Save!</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 PaletteCraft. Built with love.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
